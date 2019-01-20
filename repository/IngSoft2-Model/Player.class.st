@@ -53,9 +53,9 @@ Player >> name [
 ]
 
 { #category : #playing }
-Player >> removeCard: aCardName [
+Player >> removeCard: aCard [
 	cardCollection
-		detect: [ :each | each name = aCardName ]
+		detect: [ :each | each name = aCard name ]
 		ifFound: [ :found | cardCollection remove: found ]
 		ifNone: [ GameException signal: 'You dont have this card' ]
 ]
@@ -66,6 +66,6 @@ Player >> roll: diceCollection [
 ]
 
 { #category : #playing }
-Player >> useCardNamed: aName [
-	cardCollection detect: [ :each | each name = aName ] ifFound: [ :found | ^ found ] ifNone: [ GameException signal: 'You dont have that card' ]
+Player >> useCard: aCard [
+	cardCollection detect: [ :each | each name = aCard name ] ifFound: [ :found | ^ found ] ifNone: [ GameException signal: 'You dont have that card' ]
 ]

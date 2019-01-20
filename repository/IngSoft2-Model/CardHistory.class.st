@@ -25,5 +25,5 @@ CardHistory >> targetName [
 { #category : #initialization }
 CardHistory >> to: anAffectedPlayer with: aCard [
 	target := anAffectedPlayer name.
-	effect := aCard
+	effect := aCard name
 ]

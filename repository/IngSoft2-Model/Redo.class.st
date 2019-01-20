@@ -7,9 +7,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #adding }
+Redo >> addTo: cardsHistory to: anotherPlayer with: aCard [
+	
+]
+
 { #category : #initialization }
 Redo >> initialize [
-	name := 'Redo'.
 	cards := OrderedCollection new
 		add: Acceleration new;
 		add: Overload new;
