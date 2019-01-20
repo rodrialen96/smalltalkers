@@ -7,9 +7,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #adding }
+Cancellation >> addTo: cardsHistory to: anotherPlayer with: aCard [
+	cardsHistory add: (CardHistory to: anotherPlayer with: aCard)
+]
+
 { #category : #initialization }
 Cancellation >> initialize [
-	name := 'Cancellation'.
 	target := 'none'.
 	permanentCards := OrderedCollection new
 		add: Acceleration new;

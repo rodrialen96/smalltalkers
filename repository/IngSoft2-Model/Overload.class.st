@@ -4,9 +4,9 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
-Overload >> initialize [
-	name := 'Overload'
+{ #category : #adding }
+Overload >> addTo: cardsHistory to: anotherPlayer with: aCard [
+	cardsHistory add: (CardHistory to: anotherPlayer with: aCard) 
 ]
 
 { #category : #accessing }
