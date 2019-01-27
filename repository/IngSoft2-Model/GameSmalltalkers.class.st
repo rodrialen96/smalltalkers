@@ -33,11 +33,22 @@ GameSmalltalkers >> advance: aPlayer aQuantityOf: aNumber [
 ]
 
 { #category : #playing }
+GameSmalltalkers >> advanceAndApplyEffectChangingTurnTo: aPlayer [
+	self advanceAndApplyEffectTo: aPlayer.
+	self changeTurn
+]
+
+{ #category : #playing }
 GameSmalltalkers >> advanceAndApplyEffectTo: aPlayer [
 	self player: aPlayer advance: (aPlayer roll: diceCollection).
 	effectsHistory add: (EffectHistory with: aPlayer and: (self board effectAt: (self positionOf: aPlayer))).
 	(self board effectAt: (self positionOf: aPlayer)) applyTo: aPlayer on: self.
-	self changeTurn
+
+]
+
+{ #category : #playing }
+GameSmalltalkers >> advanceAndApplyEffectWithoutChangeTurnTo: aPlayer [
+	self advanceAndApplyEffectTo: aPlayer
 ]
 
 { #category : #playing }
@@ -103,7 +114,8 @@ GameSmalltalkers >> initializeWithPlayers: playersCollection onBoard: aBoard wit
 
 { #category : #ordering }
 GameSmalltalkers >> invertOrderOfPlayers [
-	players := players reversed
+	players := players reversed.
+	turnPlayer := players at: order
 ]
 
 { #category : #accessing }
@@ -124,7 +136,14 @@ GameSmalltalkers >> modifyCardEffectGoBackNumberOf: aPlayer with: aNumber [
 { #category : #playing }
 GameSmalltalkers >> play: aPlayer [
 	self assertIsTurnOf: aPlayer.
-	self advanceAndApplyEffectTo: aPlayer.
+	self advanceAndApplyEffectChangingTurnTo: aPlayer.
+	state := state nextStateOf: aPlayer on: self
+]
+
+{ #category : #playing }
+GameSmalltalkers >> playWithoutChangeTurn: aPlayer [
+	self assertIsTurnOf: aPlayer.
+	self advanceAndApplyEffectWithoutChangeTurnTo: aPlayer.
 	state := state nextStateOf: aPlayer on: self
 ]
 
@@ -186,6 +205,11 @@ GameSmalltalkers >> removePlayedCardAffecting: aPlayerName with: aCardName [
 { #category : #accessing }
 GameSmalltalkers >> turn [
 	^ turnPlayer
+]
+
+{ #category : #ordering }
+GameSmalltalkers >> updateOrderOfPlayers [
+	turnPlayer := players at: order
 ]
 
 { #category : #accessing }

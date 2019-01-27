@@ -16,5 +16,6 @@ Reverse >> name [
 
 { #category : #playing }
 Reverse >> player: aPlayer useAgainst: anotherPlayer on: aGame [
-	aGame invertOrderOfPlayers
+	aGame invertOrderOfPlayers.
+	aGame updateOrderOfPlayers
 ]

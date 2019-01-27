@@ -363,6 +363,49 @@ GameSmalltalkersTest >> testPlayingGameWithCards [
 ]
 
 { #category : #tests }
+GameSmalltalkersTest >> testPlayingGameWithDoubleCard [
+	| game effectSequence addDoubleCard withoutEffect |
+	withoutEffect := WithoutEffect new.
+	addDoubleCard := AddDoubleCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addDoubleCard;
+		add: addDoubleCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 1 1 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game player: rodri useCard: Double new against: rodri.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 7.
+	self assert: (game positionOf: fran) equals: 3.
+	game player: fran useCard: Double new against: fran.
+	self
+		should: [ game player: fran useCard: Double new against: fran ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You dont have that card' ].
+	game play: fran.
+	self
+		should: [ game player: rodri useCard: Double new against: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You dont have that card' ].
+	self assert: (game positionOf: rodri) equals: 7.
+	self assert: (game positionOf: fran) equals: 8
+]
+
+{ #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithEffects [
 	| game effectSequence ranking wormHole speedUp moonWalk atomicBomb anotherMoonWalk withoutEffect |
 	wormHole := WormHole new.
@@ -706,6 +749,80 @@ GameSmalltalkersTest >> testPlayingGameWithRepeatCard [
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 0
+]
+
+{ #category : #tests }
+GameSmalltalkersTest >> testPlayingGameWithReverseCard [
+	| game effectSequence addReverseCard withoutEffect |
+	withoutEffect := WithoutEffect new.
+	addReverseCard := AddReverseCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addReverseCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 1 1 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	game player: rodri useCard: Reverse new against: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	self
+		should: [ game play: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ].
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 5
+]
+
+{ #category : #tests }
+GameSmalltalkersTest >> testPlayingGameWithSkipCard [
+	| game effectSequence addSkipCard withoutEffect |
+	withoutEffect := WithoutEffect new.
+	addSkipCard := AddSkipCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addSkipCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 1 1 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game player: rodri useCard: Skip new against: fran.
+	self
+		should: [ game play: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ].
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 5
 ]
 
 { #category : #tests }
