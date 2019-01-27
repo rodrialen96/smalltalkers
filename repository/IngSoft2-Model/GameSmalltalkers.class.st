@@ -24,11 +24,25 @@ GameSmalltalkers class >> playedBy: players onBoard: aBoard withDices: diceColle
 ]
 
 { #category : #playing }
+GameSmalltalkers >> advance: aPlayer aQuantityOf: aNumber [
+	| current cardTotalEffects |
+	current := playersPositions at: aPlayer.
+	cardTotalEffects := cardEffectAdvanceNumber at: aPlayer.
+	playersPositions at: aPlayer put: (current + aNumber + cardTotalEffects) \\ board length.
+	playersLaps at: aPlayer put: (playersLaps at: aPlayer) + ((current + aNumber + cardTotalEffects) // board length)
+]
+
+{ #category : #playing }
 GameSmalltalkers >> advanceAndApplyEffectTo: aPlayer [
 	self player: aPlayer advance: (aPlayer roll: diceCollection).
 	effectsHistory add: (EffectHistory with: aPlayer and: (self board effectAt: (self positionOf: aPlayer))).
 	(self board effectAt: (self positionOf: aPlayer)) applyTo: aPlayer on: self.
 	self changeTurn
+]
+
+{ #category : #playing }
+GameSmalltalkers >> applyCardEffectNumberOf: aPlayer with: aNumber [
+	cardEffectAdvanceNumber at: aPlayer put: (cardEffectAdvanceNumber at: aPlayer) + aNumber
 ]
 
 { #category : #asserting }
@@ -87,6 +101,11 @@ GameSmalltalkers >> initializeWithPlayers: playersCollection onBoard: aBoard wit
 	effectsHistory add: (EffectHistory with: self and: (board effectAt: 0))
 ]
 
+{ #category : #ordering }
+GameSmalltalkers >> invertOrderOfPlayers [
+	players := players reversed
+]
+
 { #category : #accessing }
 GameSmalltalkers >> lapsOf: aPlayer [
 	^ playersLaps at: aPlayer
@@ -94,12 +113,12 @@ GameSmalltalkers >> lapsOf: aPlayer [
 
 { #category : #playing }
 GameSmalltalkers >> modifyCardEffectAdvanceNumberOf: aPlayer with: aNumber [
-	cardEffectAdvanceNumber at: aPlayer put: (cardEffectAdvanceNumber at: aPlayer) + aNumber
+	self applyCardEffectNumberOf: aPlayer with: aNumber
 ]
 
 { #category : #playing }
 GameSmalltalkers >> modifyCardEffectGoBackNumberOf: aPlayer with: aNumber [
-	cardEffectAdvanceNumber at: aPlayer put: (cardEffectAdvanceNumber at: aPlayer) - aNumber
+	self applyCardEffectNumberOf: aPlayer with: aNumber negated
 ]
 
 { #category : #playing }
@@ -116,20 +135,12 @@ GameSmalltalkers >> player: aPlayer addCard: aCard [
 
 { #category : #playing }
 GameSmalltalkers >> player: aPlayer advance: aNumber [
-	| current cardTotalEffects |
-	current := playersPositions at: aPlayer.
-	cardTotalEffects := cardEffectAdvanceNumber at: aPlayer.
-	playersPositions at: aPlayer put: (current + aNumber + cardTotalEffects) \\ board length.
-	playersLaps at: aPlayer put: (playersLaps at: aPlayer) + ((current + aNumber + cardTotalEffects) // board length)
+	self advance: aPlayer aQuantityOf: aNumber
 ]
 
 { #category : #playing }
 GameSmalltalkers >> player: aPlayer goBack: aNumber [
-	| current cardTotalEffects |
-	current := playersPositions at: aPlayer.
-	cardTotalEffects := cardEffectAdvanceNumber at: aPlayer.
-	playersPositions at: aPlayer put: (current - aNumber + cardTotalEffects) \\ board length.
-	playersLaps at: aPlayer put: (playersLaps at: aPlayer) + ((current - aNumber + cardTotalEffects) // board length)
+	self advance: aPlayer aQuantityOf: aNumber negated
 ]
 
 { #category : #playing }

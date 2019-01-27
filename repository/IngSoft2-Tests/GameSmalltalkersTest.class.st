@@ -789,3 +789,21 @@ GameSmalltalkersTest >> testPlayingGameWithoutEffects [
 	self assert: (ranking scoreOf: fran) equals: 24.
 	self assert: (ranking scoreOf: rodri) equals: 16
 ]
+
+{ #category : #tests }
+GameSmalltalkersTest >> testReverseOrderOfPlayers [
+	| speedUp wormHole effectSequence game |
+	speedUp := SpeedUp new.
+	wormHole := WormHole new.
+	effectSequence := OrderedCollection new
+		add: wormHole;
+		add: wormHole;
+		add: speedUp;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 2 3 4) andEffectSequence: effectSequence.
+	self assert: (game players at: 1) name equals: 'Rodri'.
+	self assert: (game players at: 2) name equals: 'Fran'.
+	game invertOrderOfPlayers.
+	self assert: (game players at: 1) name equals: 'Fran'.
+	self assert: (game players at: 2) name equals: 'Rodri'
+]
