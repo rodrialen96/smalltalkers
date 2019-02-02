@@ -19,3 +19,8 @@ Reverse >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame invertOrderOfPlayers.
 	aGame updateOrderOfPlayers
 ]
+
+{ #category : #assigning }
+Reverse >> selectCardTarget: aCardName [
+	target := aCardName
+]

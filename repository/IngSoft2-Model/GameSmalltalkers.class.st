@@ -197,7 +197,7 @@ GameSmalltalkers >> rankPlayers [
 { #category : #playing }
 GameSmalltalkers >> removePlayedCardAffecting: aPlayerName with: aCardName [
 	cardsHistory
-		detect: [ :each | each targetName = aPlayerName and: each effect = aCardName ]
+		detect: [ :each | each targetName = aPlayerName and: each cardName = aCardName ]
 		ifFound: [ :found | cardsHistory remove: found ]
 		ifNone: [ GameException signal: 'That player is not affected by that card' ]
 ]

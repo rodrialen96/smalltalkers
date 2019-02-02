@@ -18,3 +18,8 @@ Skip >> name [
 Skip >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame changeTurn
 ]
+
+{ #category : #assigning }
+Skip >> selectCardTarget: aCardName [
+	target := aCardName
+]

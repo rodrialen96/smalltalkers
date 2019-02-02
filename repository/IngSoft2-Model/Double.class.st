@@ -19,3 +19,8 @@ Double >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame playWithoutChangeTurn: aGame turn
 
 ]
+
+{ #category : #assigning }
+Double >> selectCardTarget: aCardName [
+	target := aCardName
+]
