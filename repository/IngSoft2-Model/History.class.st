@@ -6,8 +6,3 @@ Class {
 	],
 	#category : #'IngSoft2-Model'
 }
-
-{ #category : #accessing }
-History >> effect [
-	^ self subclassResponsibility
-]

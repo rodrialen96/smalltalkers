@@ -2,7 +2,8 @@ Class {
 	#name : #CardHistory,
 	#superclass : #History,
 	#instVars : [
-		'target'
+		'target',
+		'card'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -13,8 +14,13 @@ CardHistory class >> to: destinyPlayer with: aCard [
 ]
 
 { #category : #accessing }
-CardHistory >> effect [
-	^ effect
+CardHistory >> card [
+	^ card
+]
+
+{ #category : #accessing }
+CardHistory >> cardName [
+	^ card name
 ]
 
 { #category : #accessing }
@@ -25,5 +31,5 @@ CardHistory >> targetName [
 { #category : #initialization }
 CardHistory >> to: anAffectedPlayer with: aCard [
 	target := anAffectedPlayer name.
-	effect := aCard name
+	card := aCard
 ]

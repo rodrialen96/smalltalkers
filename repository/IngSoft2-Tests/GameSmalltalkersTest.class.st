@@ -406,6 +406,46 @@ GameSmalltalkersTest >> testPlayingGameWithDoubleCard [
 ]
 
 { #category : #tests }
+GameSmalltalkersTest >> testPlayingGameWithDoubleRedoCard [
+	| game effectSequence addDoubleCard addRedoCard withoutEffect |
+	withoutEffect := WithoutEffect new.
+	addDoubleCard := AddDoubleCard new.
+	addRedoCard := AddRedoCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addDoubleCard;
+		add: addRedoCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 1 1 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game player: rodri useCard: Double new against: rodri.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 7.
+	self assert: (game positionOf: fran) equals: 3.
+	self
+		should: [ game player: rodri useCard: Double new against: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You dont have that card' ].
+	game player: fran useCard: Redo new against: fran.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 7.
+	self assert: (game positionOf: fran) equals: 8
+]
+
+{ #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithEffects [
 	| game effectSequence ranking wormHole speedUp moonWalk atomicBomb anotherMoonWalk withoutEffect |
 	wormHole := WormHole new.
@@ -577,7 +617,7 @@ GameSmalltalkersTest >> testPlayingGameWithRedoCard [
 		add: withoutEffect;
 		add: addRedoCard;
 		add: withoutEffect;
-		add: withoutEffect;
+		add: addRedoCard;
 		yourself.
 	game := self gamedWithDiceSequence: #(3 3 5 2) andEffectSequence: effectSequence.
 	self assert: game board length equals: 24.
@@ -610,7 +650,16 @@ GameSmalltalkersTest >> testPlayingGameWithRedoCard [
 	self assert: (game positionOf: rodri) equals: 21.
 	game player: fran useCard: Repeat new against: rodri.
 	self assert: (game positionOf: fran) equals: 17.
-	self assert: (game positionOf: rodri) equals: 21
+	self assert: (game positionOf: rodri) equals: 21.
+	game play: rodri.
+	self assert: (game positionOf: fran) equals: 17.
+	self assert: (game positionOf: rodri) equals: 7.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 23.
+	self assert: (game positionOf: rodri) equals: 7.
+	game player: fran useCard: Redo new against: 'all'.
+	self assert: (game positionOf: fran) equals: 23.
+	self assert: (game positionOf: rodri) equals: 7
 ]
 
 { #category : #tests }
@@ -789,6 +838,45 @@ GameSmalltalkersTest >> testPlayingGameWithReverseCard [
 ]
 
 { #category : #tests }
+GameSmalltalkersTest >> testPlayingGameWithReverseRedoCard [
+	| game effectSequence addReverseCard addRedoCard withoutEffect |
+	withoutEffect := WithoutEffect new.
+	addReverseCard := AddReverseCard new.
+	addRedoCard := AddRedoCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addReverseCard;
+		add: addRedoCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 1 1 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	game player: rodri useCard: Reverse new against: fran.
+	game player: fran useCard: Redo new against: 'all'.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	self
+		should: [ game play: fran ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ].
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 4.
+	self assert: (game positionOf: fran) equals: 3
+]
+
+{ #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithSkipCard [
 	| game effectSequence addSkipCard withoutEffect |
 	withoutEffect := WithoutEffect new.
@@ -823,6 +911,45 @@ GameSmalltalkersTest >> testPlayingGameWithSkipCard [
 	game play: fran.
 	self assert: (game positionOf: rodri) equals: 2.
 	self assert: (game positionOf: fran) equals: 5
+]
+
+{ #category : #tests }
+GameSmalltalkersTest >> testPlayingGameWithSkipRedoCard [
+	| game effectSequence addSkipCard addRedoCard withoutEffect |
+	withoutEffect := WithoutEffect new.
+	addSkipCard := AddSkipCard new.
+	addRedoCard := AddRedoCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addSkipCard;
+		add: addRedoCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(1 1 1 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 4.
+	self assert: (game positionOf: fran) equals: 3.
+	game player: rodri useCard: Skip new against: fran.
+	game player: fran useCard: Redo new against: 'all'.
+	self
+		should: [ game play: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ]
 ]
 
 { #category : #tests }
