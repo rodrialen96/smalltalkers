@@ -26,6 +26,6 @@ Acceleration >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Acceleration >> selectCardTarget: aCardName [
-	target := aCardName
+Acceleration >> selectCardTarget: aCard [
+	target := aCard
 ]

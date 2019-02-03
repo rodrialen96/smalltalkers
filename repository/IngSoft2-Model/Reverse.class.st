@@ -21,6 +21,6 @@ Reverse >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Reverse >> selectCardTarget: aCardName [
-	target := aCardName
+Reverse >> selectCardTarget: aCard [
+	target := aCard
 ]

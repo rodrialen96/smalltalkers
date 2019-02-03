@@ -20,6 +20,6 @@ Skip >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Skip >> selectCardTarget: aCardName [
-	target := aCardName
+Skip >> selectCardTarget: aCard [
+	target := aCard
 ]

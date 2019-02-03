@@ -21,6 +21,6 @@ Double >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Double >> selectCardTarget: aCardName [
-	target := aCardName
+Double >> selectCardTarget: aCard [
+	target := aCard
 ]

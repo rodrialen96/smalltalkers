@@ -20,6 +20,6 @@ Repeat >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Repeat >> selectCardTarget: aCardName [
-	target := aCardName
+Repeat >> selectCardTarget: aCard [
+	target := aCard
 ]
