@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #playing }
-PermanentCard >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
+PermanentCard >> fromPlayer: aPlayer applyCancelEffectTo: anotherPlayer on: aGame [
 	self subclassResponsibility
 ]
 

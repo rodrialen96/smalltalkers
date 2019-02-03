@@ -23,6 +23,6 @@ Redo >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Redo >> selectCardTarget: aCardName [
-	target := aCardName
+Redo >> selectCardTarget: aCard [
+	target := aCard
 ]

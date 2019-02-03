@@ -1,9 +1,6 @@
 Class {
 	#name : #Cancellation,
 	#superclass : #InstantaneousCard,
-	#instVars : [
-		'permanentCards'
-	],
 	#category : #'IngSoft2-Model'
 }
 
@@ -12,14 +9,23 @@ Cancellation >> addTo: cardsHistory to: anotherPlayer with: aCard [
 	cardsHistory add: (CardHistory to: anotherPlayer with: aCard)
 ]
 
+{ #category : #testing }
+Cancellation >> assertEmptyTarget [
+	target = 'none'
+		ifTrue: [ GameException signal: 'You have to declare a target first' ]
+
+]
+
+{ #category : #testing }
+Cancellation >> assertPermanentCard [
+	(target isKindOf: PermanentCard)
+		ifFalse: [ GameException signal: 'The target must be a Permanent Card' ]
+
+]
+
 { #category : #initialization }
 Cancellation >> initialize [
-	target := 'none'.
-	permanentCards := OrderedCollection new
-		add: Acceleration new;
-		add: Overload new;
-		add: Speed new;
-		yourself
+	target := 'none'
 ]
 
 { #category : #accessing }
@@ -29,16 +35,12 @@ Cancellation >> name [
 
 { #category : #playing }
 Cancellation >> player: aPlayer useAgainst: anotherPlayer on: aGame [
-	target = 'none'
-		ifTrue: [ GameException signal: 'You have to declare a target first' ]
-		ifFalse: [ permanentCards
-				detect: [ :each | each name = target ]
-				ifFound: [ :found | 
-					aGame removePlayedCardAffecting: anotherPlayer name with: found name.
-					found player: aPlayer cancelEffectTo: anotherPlayer on: aGame ] ]
+	self assertEmptyTarget.
+	self assertPermanentCard.
+	aGame cancelCard: target from: aPlayer to: anotherPlayer
 ]
 
 { #category : #assigning }
-Cancellation >> selectCardTarget: aCardName [
-	target := aCardName
+Cancellation >> selectCardTarget: aCard [
+	target := aCard
 ]

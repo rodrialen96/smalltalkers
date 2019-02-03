@@ -26,6 +26,6 @@ Overload >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Overload >> selectCardTarget: aCardName [
-	target := aCardName
+Overload >> selectCardTarget: aCard [
+	target := aCard
 ]

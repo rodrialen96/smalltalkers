@@ -192,12 +192,12 @@ GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
 	self assert: (game positionOf: rodri) equals: 4.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
-	game player: fran targetForCancellationCardIs: 'Overload'.
+	game player: fran targetForCancellationCardIs: Overload new.
 	self
 		should: [ game player: fran useCard: Cancellation new against: fran ]
 		raise: GameException
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'That player is not affected by that card' ].
-	game player: rodri targetForCancellationCardIs: 'Overload'.
+	game player: rodri targetForCancellationCardIs: Overload new.
 	self
 		should: [ game player: rodri useCard: Cancellation new against: rodri ]
 		raise: GameException
@@ -214,9 +214,9 @@ GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
 	self assert: game turn equals: fran.
 	self assert: (game positionOf: rodri) equals: 8.
 	self assert: (game positionOf: fran) equals: 4.
-	game player: fran targetForCancellationCardIs: 'Overload'.
+	game player: fran targetForCancellationCardIs: Overload new.
 	game player: fran useCard: Cancellation new against: fran.
-	game player: rodri targetForCancellationCardIs: 'Speed'.
+	game player: rodri targetForCancellationCardIs: Speed new.
 	game player: rodri useCard: Cancellation new against: rodri.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 8.
@@ -246,7 +246,7 @@ GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 4.
 	self assert: (game positionOf: fran) equals: 5.
-	game player: fran targetForCancellationCardIs: 'Acceleration'.
+	game player: fran targetForCancellationCardIs: Acceleration new.
 	game player: fran useCard: Cancellation new against: 'all'.
 	game play: fran.
 	self assert: (game positionOf: rodri) equals: 4.
@@ -298,7 +298,7 @@ GameSmalltalkersTest >> testPlayingGameWithCards [
 	game player: rodri useCard: Speed new against: rodri.
 	game player: rodri useCard: Overload new against: fran.
 	self
-		should: [ game player: fran targetForCancellationCardIs: 'Overload' ]
+		should: [ game player: fran targetForCancellationCardIs: Overload new ]
 		raise: GameException
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You dont have Cancellation Card' ].
 	game play: rodri.
@@ -313,7 +313,7 @@ GameSmalltalkersTest >> testPlayingGameWithCards [
 	game play: rodri.
 	self assert: game turn equals: fran.
 	game player: fran useCard: Speed new against: fran.
-	game player: rodri targetForCancellationCardIs: 'Overload'.
+	game player: rodri targetForCancellationCardIs: Overload new.
 	game player: rodri useCard: Cancellation new against: rodri.
 	self assert: (game positionOf: rodri) equals: 12.
 	self assert: (game positionOf: fran) equals: 12.
@@ -335,7 +335,7 @@ GameSmalltalkersTest >> testPlayingGameWithCards [
 	game play: fran.
 	self assert: (game positionOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 9.
-	game player: rodri targetForCancellationCardIs: 'Speed'.
+	game player: rodri targetForCancellationCardIs: Speed new.
 	game player: rodri useCard: Cancellation new against: fran.
 	game play: rodri.
 	self assert: (game positionOf: fran) equals: 9.
@@ -709,12 +709,12 @@ GameSmalltalkersTest >> testPlayingGameWithRedoCardAndCancellation [
 	self assert: (game positionOf: rodri) equals: 12.
 	self assert: (game positionOf: fran) equals: 7.
 	game player: fran useCard: Speed new against: fran.
-	game player: fran targetForCancellationCardIs: 'Overload'.
+	game player: fran targetForCancellationCardIs: Overload new.
 	game player: fran useCard: Cancellation new against: fran.
-	game player: rodri targetForRedoCancellationCardIs: 'Speed'.
+	game player: rodri targetForRedoCancellationCardIs: Speed new.
 	game player: rodri useCard: Redo new against: fran.
 	self
-		should: [ game player: rodri targetForRedoCancellationCardIs: 'Speed' ]
+		should: [ game player: rodri targetForRedoCancellationCardIs: Speed new ]
 		raise: GameException
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You dont have Redo Card' ].
 	self
@@ -1032,6 +1032,62 @@ GameSmalltalkersTest >> testPlayingGameWithoutEffects [
 	self assert: (ranking playerAtPosition: 2) equals: rodri.
 	self assert: (ranking scoreOf: fran) equals: 24.
 	self assert: (ranking scoreOf: rodri) equals: 16
+]
+
+{ #category : #tests }
+GameSmalltalkersTest >> testPlayingWithoutPermanentsCardUsingCancellationCard [
+	| game effectSequence addRedoCard withoutEffect addCancellationCard |
+	withoutEffect := WithoutEffect new.
+	addRedoCard := AddRedoCard new.
+	addCancellationCard := AddCancellationCard new.
+	effectSequence := OrderedCollection new
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addRedoCard;
+		add: addRedoCard;
+		add: addCancellationCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addRedoCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addRedoCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		yourself.
+	game := self gamedWithDiceSequence: #(3 3 5 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 24.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 6.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 7.
+	game player: rodri useCard: Overload new against: fran.
+	self
+		should: [ game player: rodri useCard: Overload new against: fran ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You dont have that card' ].
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 12.
+	self assert: (game positionOf: fran) equals: 7.
+	game player: fran useCard: Speed new against: fran.
+	game player: fran targetForCancellationCardIs: Overload new.
+	game player: fran useCard: Cancellation new against: fran.
+	game player: rodri targetForRedoCancellationCardIs: Skip new.
+	self
+		should: [ game player: rodri useCard: Redo new against: fran ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The target must be a Permanent Card' ]
 ]
 
 { #category : #tests }

@@ -26,6 +26,6 @@ Speed >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Speed >> selectCardTarget: aCardName [
-	target := aCardName
+Speed >> selectCardTarget: aCard [
+	target := aCard
 ]
