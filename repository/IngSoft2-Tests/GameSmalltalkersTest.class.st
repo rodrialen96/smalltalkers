@@ -387,11 +387,11 @@ GameSmalltalkersTest >> testPlayingGameWithDoubleCard [
 	game play: fran.
 	self assert: (game positionOf: rodri) equals: 2.
 	self assert: (game positionOf: fran) equals: 3.
-	game player: rodri useCard: Double new against: rodri.
+	game player: fran useCard: Double new against: fran.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 7.
 	self assert: (game positionOf: fran) equals: 3.
-	game player: fran useCard: Double new against: fran.
+	game player: rodri useCard: Double new against: rodri.
 	self
 		should: [ game player: fran useCard: Double new against: fran ]
 		raise: GameException

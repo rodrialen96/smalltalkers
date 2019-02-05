@@ -16,7 +16,7 @@ Double >> name [
 
 { #category : #playing }
 Double >> player: aPlayer useAgainst: anotherPlayer on: aGame [
-	aGame playWithoutChangeTurn: aGame turn
+	aGame playWithoutChangeTurn
 
 ]
 
