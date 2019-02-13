@@ -56,7 +56,7 @@ GameSmalltalkers >> board [
 	^ board
 ]
 
-{ #category : #asserting }
+{ #category : #playing }
 GameSmalltalkers >> cancelCard: aCard from: aPlayer to: anotherPlayer [
 	self removePlayedCardAffecting: anotherPlayer name with: aCard name.
 	aCard player: aPlayer cancelEffectTo: anotherPlayer on: self

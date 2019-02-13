@@ -4,9 +4,9 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #playing }
-PermanentCard >> fromPlayer: aPlayer applyCancelEffectTo: anotherPlayer on: aGame [
-	self subclassResponsibility
+{ #category : #accessing }
+PermanentCard >> player: arg1 cancelEffectTo: arg2 on: arg3 [ 
+	^ self subclassResponsibility
 ]
 
 { #category : #playing }
